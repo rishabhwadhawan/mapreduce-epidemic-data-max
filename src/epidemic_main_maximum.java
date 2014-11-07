@@ -16,6 +16,7 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
 public class epidemic_main_maximum
 {
+	
 	static class MaxFromEachMapper extends Mapper<LongWritable, Text, Text, DoubleWritable>
 	{
 		static List<String> key_list = new ArrayList<String>();
@@ -31,6 +32,10 @@ public class epidemic_main_maximum
 			
 			if(Integer.parseInt(k_value) == 0)
 			{
+				if(key_list.size()>0)
+				{
+					key_list.clear();
+				}
 				key_list.addAll((List<String>) Arrays.asList(c_line.split(",")));
 				key_list.remove(1);
 				key_list.remove(0);
@@ -90,6 +95,8 @@ public class epidemic_main_maximum
 
 	static class MaxFromAllReducer extends Reducer<Text,DoubleWritable,Text,DoubleWritable>
 	{
+		String new_key = new String("US");
+		Double max_US = Double.MIN_VALUE;
 	public void reduce(Text key, Iterable<DoubleWritable> values, Context context)
 			throws IOException, InterruptedException
 			{
@@ -97,9 +104,14 @@ public class epidemic_main_maximum
 			
 			for(DoubleWritable value : values)
 			{
-				maximum_of_all = Math.max(maximum_of_all, value.get()); 
+				maximum_of_all = Math.max(maximum_of_all, value.get());
+				if(maximum_of_all > max_US )
+				{
+					max_US = maximum_of_all;
+				}
 			}
-				context.write(key, new DoubleWritable(maximum_of_all));
+					//System.out.println(new_key+" "+max_US);
+					context.write(key, new DoubleWritable(maximum_of_all));
 			}
 	}
 

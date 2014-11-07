@@ -21,14 +21,14 @@ public class normalizing_data_using_mr
 		public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException
 		{
 			double max_value = Double.MIN_VALUE;
-			String current_line = null; 
+			String c_line = null; 
 			//while((
-			current_line = value.toString();
+			c_line = value.toString();
 			//{
-				List<String> each_value = new ArrayList<String>();
-				each_value.addAll((List<String>) Arrays.asList(current_line.split(",")));
+				List<String> new_value = new ArrayList<String>();
+				new_value.addAll((List<String>) Arrays.asList(c_line.split(",")));
 				//System.out.println("****************************************" + each_value.size());
-				for(int x = 2; x < each_value.size();x++)
+				for(int x = 2; x < new_value.size();x++)
 				{
 					try
 					{

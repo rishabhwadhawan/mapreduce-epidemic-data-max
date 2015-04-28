@@ -95,22 +95,23 @@ public class epidemic_main_maximum
 
 	static class MaxFromAllReducer extends Reducer<Text,DoubleWritable,Text,DoubleWritable>
 	{
-		String new_key = new String("US");
-		Double max_US = Double.MIN_VALUE;
+		    
 	public void reduce(Text key, Iterable<DoubleWritable> values, Context context)
 			throws IOException, InterruptedException
 			{
+				
 				double maximum_of_all = Double.MIN_VALUE;
-			
+				//DoubleWritable alpha = new DoubleWritable(maximum_of_all);	
 			for(DoubleWritable value : values)
 			{
 				maximum_of_all = Math.max(maximum_of_all, value.get());
-				if(maximum_of_all > max_US )
-				{
-					max_US = maximum_of_all;
-				}
-			}
-					//System.out.println(new_key+" "+max_US);
+			}	
+	//		
+		//	
+			//if(alpha > max_US )
+		//	{
+			//	max_US = alpha;
+			//}
 					context.write(key, new DoubleWritable(maximum_of_all));
 			}
 	}
